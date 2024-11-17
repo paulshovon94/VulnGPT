@@ -1,0 +1,21 @@
+# Environment variables
+.env
+
+# Python-related
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+
+# Logs
+*.log
+
+# Byte-compiled
+*.pyo
+*.pyd
+
+# Cursor rules
+.cursorrules
+    
