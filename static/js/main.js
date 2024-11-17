@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add user message to chat
         addMessageToChat(message, 'user');
 
-        // Clear input
+        // Clear input and reset height
         userInput.value = '';
         userInput.style.height = 'auto';
 
@@ -48,8 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             
-            // Add system response to chat
-            addMessageToChat(data.guidance, 'system');
+            // Add system response to chat with formatting
+            const formattedResponse = data.guidance.replace(/\n/g, '<br>');
+            addMessageToChat(formattedResponse, 'system', true);
+
         } catch (error) {
             addMessageToChat('Sorry, there was an error processing your request.', 'system');
             console.error('Error:', error);
@@ -58,10 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function addMessageToChat(message, type) {
+    function addMessageToChat(message, type, isHTML = false) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', `${type}-message`);
-        messageDiv.textContent = message;
+        
+        if (isHTML) {
+            messageDiv.innerHTML = message;
+        } else {
+            messageDiv.textContent = message;
+        }
+        
         chatHistory.appendChild(messageDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }

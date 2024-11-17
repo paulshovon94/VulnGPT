@@ -19,3 +19,6 @@ venv/
 # Cursor rules
 .cursorrules
 .DS_Store
+
+# Do not ignore services directory
+!services/
