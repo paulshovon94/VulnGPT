@@ -18,4 +18,4 @@ venv/
 
 # Cursor rules
 .cursorrules
-    .DS_Store
+.DS_Store
