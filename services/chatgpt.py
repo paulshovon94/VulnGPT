@@ -5,8 +5,8 @@ This module handles all interactions with the OpenAI GPT API for generating
 Shodan queries and explanations. It includes input validation, error handling,
 and response formatting.
 
-Author: Your Name
-Date: YYYY-MM-DD
+Author: Shovon Paul
+Date: 2024-11-17
 """
 
 from openai import AsyncOpenAI
