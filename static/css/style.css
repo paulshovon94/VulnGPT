@@ -66,6 +66,8 @@ body {
     padding: 15px;
     border-radius: 8px;
     max-width: 90%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .user-message {
@@ -76,6 +78,12 @@ body {
 .system-message {
     background-color: var(--input-bg);
     margin-right: auto;
+    font-family: monospace;
+    line-height: 1.4;
+}
+
+.system-message br {
+    margin-bottom: 8px;
 }
 
 .input-container {
