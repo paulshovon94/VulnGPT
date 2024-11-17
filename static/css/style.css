@@ -1,0 +1,126 @@
+:root {
+    --primary-color: #2c2c2c;
+    --secondary-color: #444654;
+    --text-color: #ffffff;
+    --input-bg: #40414f;
+    --border-color: #565869;
+}
+
+.header {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.header .subtitle {
+    font-size: 1.1rem;
+    color: #8e8ea0;
+    margin: 5px 0 0 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 90%;
+}
+
+.user-message {
+    background-color: var(--secondary-color);
+    margin-left: auto;
+}
+
+.system-message {
+    background-color: var(--input-bg);
+    margin-right: auto;
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 16px;
+    resize: none;
+    outline: none;
+    max-height: 200px;
+}
+
+textarea::placeholder {
+    color: #8e8ea0;
+}
+
+button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-color);
+    transition: transform 0.2s ease;
+}
+
+button:hover svg {
+    transform: scale(1.1);
+}
+
+button:disabled svg {
+    fill: var(--border-color);
+} 

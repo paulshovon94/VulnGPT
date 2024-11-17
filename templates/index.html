@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VulnGPT - Vulnerability Guided Protection Toolkit</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>VulnGPT</h1>
+            <p class="subtitle">Vulnerability Guided Protection Toolkit</p>
+        </header>
+        <div class="chat-container">
+            <div class="chat-history" id="chatHistory">
+                <!-- Chat messages will be inserted here -->
+            </div>
+            <div class="input-container">
+                <textarea 
+                    id="userInput" 
+                    placeholder="Type your search query here..."
+                    rows="1"
+                    autofocus
+                ></textarea>
+                <button id="sendButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html> 
