@@ -19,10 +19,12 @@ import json
 # Load environment variables
 load_dotenv()
 
-# Initialize AsyncOpenAI client
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-if not client.api_key:
+# Initialize AsyncOpenAI client with API key
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
     raise ValueError("OPENAI_API_KEY not found in environment variables")
+
+client = AsyncOpenAI(api_key=api_key)
 
 # Define system prompt for consistent GPT responses
 SYSTEM_PROMPT = """You are a Shodan search expert. Your role is to:
@@ -57,13 +59,13 @@ async def get_shodan_query(user_question: str) -> Dict[str, Any]:
 
         # Create chat completion request using new API syntax
         response = await client.chat.completions.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-3.5-turbo"),
+            model="gpt-3.5-turbo-0125",  # Using the latest stable model version
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_question}
             ],
-            temperature=0.7,  # Balance between creativity and consistency
-            max_tokens=500    # Limit response length
+            temperature=0.7,
+            max_tokens=500
         )
         
         # Extract and validate response content
