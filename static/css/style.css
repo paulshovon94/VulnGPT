@@ -136,6 +136,7 @@ textarea {
     font-size: 14px;
     padding: 4px;
     outline: none;
+    appearance: textfield;
     -moz-appearance: textfield;
     text-align: center;
 }
@@ -176,11 +177,11 @@ button:hover {
 }
 
 .user-message {
-    background-color: var(--secondary-color);
+    background-color: #697264;
 }
 
 .system-message {
-    background-color: var(--input-bg);
+    background-color: #54575d;
 }
 
 @media (max-width: 1024px) {
