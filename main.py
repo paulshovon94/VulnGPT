@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from services.chatgpt import get_shodan_query
 from services.shodan import execute_shodan_query
+from services.vulnSolution import get_security_solutions
 import json
 from typing import Optional
 import os
@@ -65,7 +66,7 @@ async def root(request: Request):
 @app.post("/query")
 async def process_query(request: QueryRequest):
     """
-    Process user queries and return both ChatGPT guidance and Shodan results.
+    Process user queries and return ChatGPT guidance, Shodan results, and security solutions.
     """
     try:
         if not request.query.strip():
@@ -77,19 +78,23 @@ async def process_query(request: QueryRequest):
         # Execute Shodan query with user-specified limit
         shodan_results = await execute_shodan_query(chatgpt_response['shodan_query'], request.limit)
         
+        # Get security solutions for each result
+        security_solutions = await get_security_solutions(shodan_results)
+        
         # Format the complete response
         formatted_response = (
             f"🔍 Suggested Shodan Query:\n"
             f"{chatgpt_response['shodan_query']}\n\n"
             f"📝 Explanation:\n"
             f"{chatgpt_response['explanation']}\n\n"
-            f"🌐 Shodan Results:\n"
+            f"🌐 Results and Solutions:\n"
         )
 
-        # Add Shodan results
-        for idx, result in enumerate(shodan_results, 1):
+        # Add Shodan results with their corresponding solutions
+        for idx, (result, solution) in enumerate(zip(shodan_results, security_solutions), 1):
+            # Add result
             formatted_response += (
-                f"\nResult {idx}:\n"
+                f"\n📊 Result {idx}:\n"
                 f"IP: {result['ip']}\n"
                 f"Port: {result['port']}\n"
                 f"Organization: {result['organization']}\n"
@@ -98,6 +103,9 @@ async def process_query(request: QueryRequest):
             )
             if result['vulns']:
                 formatted_response += f"Vulnerabilities: {', '.join(result['vulns'])}\n"
+            
+            # Add solution for this result
+            formatted_response += f"\n🛡️ Proposed Solution for Result {idx}:\n{solution}\n"
         
         return JSONResponse({
             "guidance": formatted_response
