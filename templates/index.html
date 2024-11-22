@@ -12,27 +12,42 @@
             <h1>VulnGPT</h1>
             <p class="subtitle">Vulnerability Guided Protection Toolkit</p>
         </header>
-        <div class="main-content">
-            <div class="chat-container">
+        <div class="split-container">
+            <!-- Left Panel - Search -->
+            <div class="search-panel">
+                <form id="chatForm" class="input-form">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="Type your query here..."
+                            rows="1"
+                            autofocus
+                        ></textarea>
+                        <div class="limit-input-container">
+                            <input 
+                                type="number" 
+                                id="resultLimit" 
+                                class="limit-input" 
+                                value="5" 
+                                min="1" 
+                                max="100"
+                                title="Number of results (1-100)"
+                            >
+                            <span class="limit-label">results</span>
+                        </div>
+                        <button type="submit" id="sendButton">
+                            SUBMIT
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Panel - Results -->
+            <div class="results-panel">
                 <div class="chat-history" id="chatHistory">
                     <!-- Chat messages will be inserted here -->
                 </div>
             </div>
-        </div>
-        <div class="input-container">
-            <form id="chatForm" class="input-form">
-                <textarea 
-                    id="userInput" 
-                    placeholder="Type your query here..."
-                    rows="1"
-                    autofocus
-                ></textarea>
-                <button type="submit" id="sendButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
-                </button>
-            </form>
         </div>
     </div>
     <script src="/static/js/main.js"></script>

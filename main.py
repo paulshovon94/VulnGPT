@@ -39,11 +39,13 @@ class QueryRequest(BaseModel):
     Pydantic model for query requests.
     """
     query: str
+    limit: int = 5  # Default limit of 5 results
 
     class Config:
         schema_extra = {
             "example": {
-                "query": "Find vulnerable Apache servers in Germany"
+                "query": "Find vulnerable Apache servers in Germany",
+                "limit": 5
             }
         }
 
@@ -72,8 +74,8 @@ async def process_query(request: QueryRequest):
         # Get ChatGPT response
         chatgpt_response = await get_shodan_query(request.query)
         
-        # Execute Shodan query
-        shodan_results = await execute_shodan_query(chatgpt_response['shodan_query'])
+        # Execute Shodan query with user-specified limit
+        shodan_results = await execute_shodan_query(chatgpt_response['shodan_query'], request.limit)
         
         # Format the complete response
         formatted_response = (

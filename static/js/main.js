@@ -30,32 +30,48 @@ document.addEventListener('DOMContentLoaded', () => {
         await handleSubmit();
     });
 
+    // Add this function to validate the limit input
+    function validateLimit(input) {
+        let value = parseInt(input.value);
+        if (isNaN(value) || value < 1) {
+            value = 1;
+        } else if (value > 100) {
+            value = 100;
+        }
+        input.value = value;
+        return value;
+    }
+
+    // Add this event listener after your DOMContentLoaded
+    document.getElementById('resultLimit').addEventListener('change', function() {
+        validateLimit(this);
+    });
+
+    // Update the handleSubmit function to use the validated limit
     async function handleSubmit() {
         const message = userInput.value.trim();
+        const limitInput = document.getElementById('resultLimit');
+        const limit = validateLimit(limitInput);
+        
         if (!message || userInput.disabled) return;
 
         try {
-            // Disable input while processing
             setInputState(false);
-
-            // Add user message
             addMessage('user', message);
-
-            // Clear input and reset height
             userInput.value = '';
             userInput.style.height = 'auto';
 
-            // Show loading message
             const loadingId = showLoadingMessage();
 
-            // Send request to backend
             const response = await fetch('/query', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: message })
+                body: JSON.stringify({ 
+                    query: message,
+                    limit: limit
+                })
             });
 
-            // Remove loading message
             removeLoadingMessage(loadingId);
 
             if (!response.ok) throw new Error('Network response was not ok');

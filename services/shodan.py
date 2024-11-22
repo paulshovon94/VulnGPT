@@ -24,12 +24,13 @@ if not SHODAN_API_KEY:
 
 api = shodan.Shodan(SHODAN_API_KEY)
 
-async def execute_shodan_query(query: str) -> List[Dict[str, Any]]:
+async def execute_shodan_query(query: str, limit: int = 5) -> List[Dict[str, Any]]:
     """
     Execute a Shodan query and return formatted results.
 
     Args:
         query (str): The Shodan query to execute
+        limit (int): Number of results to return (default: 5)
 
     Returns:
         List[Dict[str, Any]]: List of formatted Shodan results
@@ -38,8 +39,8 @@ async def execute_shodan_query(query: str) -> List[Dict[str, Any]]:
         HTTPException: If there's an error executing the query
     """
     try:
-        # Execute Shodan search
-        results = api.search(query, limit=5)  # Limit to 5 results for demonstration
+        # Execute Shodan search with user-specified limit
+        results = api.search(query, limit=limit)
         
         # Format the results
         formatted_results = []
