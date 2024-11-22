@@ -54,7 +54,8 @@ async def execute_shodan_query(query: str, limit: int = 5) -> List[Dict[str, Any
                 'timestamp': result.get('timestamp', 'N/A'),
                 'product': result.get('product', 'N/A'),
                 'version': result.get('version', 'N/A'),
-                'vulns': result.get('vulns', [])
+                'vulns': result.get('vulns', []),
+                'os': result.get('os', 'N/A')
             }
             formatted_results.append(formatted_result)
             

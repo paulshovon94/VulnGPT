@@ -99,10 +99,18 @@ async def process_query(request: QueryRequest):
                 f"Port: {result['port']}\n"
                 f"Organization: {result['organization']}\n"
                 f"Location: {result['location']}\n"
-                f"Product: {result['product']} {result['version']}\n"
+                f"Product: {result['product']}\n"
+                f"Version: {result['version'] if result['version'] != 'N/A' else 'Version not detected'}\n"
+                f"Operating System: {result['os'] if result['os'] != 'N/A' else 'OS not detected'}\n"
             )
+            
+            # Add vulnerabilities if present
             if result['vulns']:
-                formatted_response += f"Vulnerabilities: {', '.join(result['vulns'])}\n"
+                formatted_response += f"🔴 Vulnerabilities:\n"
+                for vuln in result['vulns']:
+                    formatted_response += f"- {vuln}\n"
+            else:
+                formatted_response += "🟢 No known vulnerabilities detected\n"
             
             # Add solution for this result
             formatted_response += f"\n🛡️ Proposed Solution for Result {idx}:\n{solution}\n"
