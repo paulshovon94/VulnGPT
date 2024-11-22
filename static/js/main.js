@@ -106,10 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingContainer.className = 'message-container system-container loading';
         loadingContainer.innerHTML = `
             <div class="message system-message">
-                <div class="loading-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="loading-animation">
+                    <div class="pulse"></div>
+                    <div class="pulse"></div>
+                    <div class="pulse"></div>
                 </div>
             </div>
         `;
