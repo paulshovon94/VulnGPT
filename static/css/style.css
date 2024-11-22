@@ -110,58 +110,73 @@ body {
 }
 
 .input-container {
+    padding: 20px;
+    background-color: var(--primary-color);
+    border-top: 1px solid var(--border-color);
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px;
-    background-color: var(--primary-color);
-    border-top: 1px solid var(--border-color);
-    z-index: 100;
 }
 
-.input-container-inner {
-    max-width: 1160px; /* Matches main-content max-width minus padding */
+.input-form {
+    max-width: 800px;
     margin: 0 auto;
     position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px 12px;
 }
 
 textarea {
-    width: 100%;
-    padding: 15px 45px 15px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--input-bg);
+    flex: 1;
+    padding: 12px;
+    padding-right: 40px;
+    border: none;
+    background-color: transparent;
     color: var(--text-color);
     font-size: 16px;
+    line-height: 1.5;
     resize: none;
     outline: none;
     max-height: 200px;
-}
-
-textarea::placeholder {
-    color: #8e8ea0;
+    min-height: 24px;
 }
 
 button {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    padding: 0;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 button svg {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     fill: var(--text-color);
-    transition: transform 0.2s ease;
 }
 
-button:hover svg {
-    transform: scale(1.1);
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
 button:disabled svg {

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const chatForm = document.getElementById('chatForm');
     const chatHistory = document.getElementById('chatHistory');
     const userInput = document.getElementById('userInput');
     const sendButton = document.getElementById('sendButton');
@@ -6,76 +7,120 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auto-resize textarea as user types
     userInput.addEventListener('input', () => {
         userInput.style.height = 'auto';
-        userInput.style.height = userInput.scrollHeight + 'px';
+        userInput.style.height = `${userInput.scrollHeight}px`;
     });
 
-    // Handle enter key (send on Enter, new line on Shift+Enter)
-    userInput.addEventListener('keydown', (e) => {
+    // Handle form submission
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleSubmit();
+    });
+
+    // Handle enter key
+    userInput.addEventListener('keydown', async (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            sendMessage();
+            await handleSubmit();
         }
     });
 
-    sendButton.addEventListener('click', sendMessage);
+    // Handle button click
+    sendButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await handleSubmit();
+    });
 
-    async function sendMessage() {
+    async function handleSubmit() {
         const message = userInput.value.trim();
-        if (!message) return;
-
-        // Add user message to chat
-        addMessageToChat(message, 'user');
-
-        // Clear input and reset height
-        userInput.value = '';
-        userInput.style.height = 'auto';
-
-        // Disable input while processing
-        setInputState(false);
+        if (!message || userInput.disabled) return;
 
         try {
+            // Disable input while processing
+            setInputState(false);
+
+            // Add user message
+            addMessage('user', message);
+
+            // Clear input and reset height
+            userInput.value = '';
+            userInput.style.height = 'auto';
+
+            // Show loading message
+            const loadingId = showLoadingMessage();
+
+            // Send request to backend
             const response = await fetch('/query', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query: message }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: message })
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // Remove loading message
+            removeLoadingMessage(loadingId);
 
-            const data = await response.json();
+            if (!response.ok) throw new Error('Network response was not ok');
             
-            // Add system response to chat with formatting
-            const formattedResponse = data.guidance.replace(/\n/g, '<br>');
-            addMessageToChat(formattedResponse, 'system', true);
+            const data = await response.json();
+            addMessage('system', data.guidance);
 
         } catch (error) {
-            addMessageToChat('Sorry, there was an error processing your request.', 'system');
             console.error('Error:', error);
+            addMessage('system', 'Sorry, there was an error processing your request.');
         } finally {
             setInputState(true);
+            scrollToBottom();
         }
     }
 
-    function addMessageToChat(message, type, isHTML = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', `${type}-message`);
-        
-        if (isHTML) {
-            messageDiv.innerHTML = message;
-        } else {
-            messageDiv.textContent = message;
+    function addMessage(type, content) {
+        const messageContainer = document.createElement('div');
+        messageContainer.className = `message-container ${type}-container`;
+
+        const messageContent = document.createElement('div');
+        messageContent.className = `message ${type}-message`;
+        messageContent.innerHTML = content.replace(/\n/g, '<br>');
+
+        messageContainer.appendChild(messageContent);
+        chatHistory.appendChild(messageContainer);
+        scrollToBottom();
+    }
+
+    function showLoadingMessage() {
+        const loadingContainer = document.createElement('div');
+        loadingContainer.className = 'message-container system-container loading';
+        loadingContainer.innerHTML = `
+            <div class="message system-message">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        chatHistory.appendChild(loadingContainer);
+        scrollToBottom();
+        return loadingContainer.id = 'loading-' + Date.now();
+    }
+
+    function removeLoadingMessage(loadingId) {
+        const loadingElement = document.getElementById(loadingId);
+        if (loadingElement) {
+            loadingElement.remove();
         }
-        
-        chatHistory.appendChild(messageDiv);
+    }
+
+    function scrollToBottom() {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
     function setInputState(enabled) {
         userInput.disabled = !enabled;
         sendButton.disabled = !enabled;
+        if (enabled) {
+            userInput.focus();
+        }
     }
+
+    // Focus input on page load
+    userInput.focus();
 }); 

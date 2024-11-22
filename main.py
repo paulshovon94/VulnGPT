@@ -14,6 +14,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from services.chatgpt import get_shodan_query
+from services.shodan import execute_shodan_query
 import json
 from typing import Optional
 import os
@@ -62,43 +63,45 @@ async def root(request: Request):
 @app.post("/query")
 async def process_query(request: QueryRequest):
     """
-    Process user queries and return Shodan search guidance.
-
-    Args:
-        request (QueryRequest): The query request containing the user's question
-
-    Returns:
-        JSONResponse: Formatted response containing Shodan query and explanation
-
-    Raises:
-        HTTPException: If there's an error processing the query
+    Process user queries and return both ChatGPT guidance and Shodan results.
     """
     try:
-        # Validate input
         if not request.query.strip():
             raise HTTPException(status_code=400, detail="Query cannot be empty")
 
-        # Get Shodan query suggestion from ChatGPT
-        response = await get_shodan_query(request.query)
+        # Get ChatGPT response
+        chatgpt_response = await get_shodan_query(request.query)
         
-        # Parse response if it's a string
-        if isinstance(response, str):
-            response = json.loads(response)
+        # Execute Shodan query
+        shodan_results = await execute_shodan_query(chatgpt_response['shodan_query'])
         
-        # Format the response for the frontend
+        # Format the complete response
         formatted_response = (
             f"🔍 Suggested Shodan Query:\n"
-            f"{response['shodan_query']}\n\n"
+            f"{chatgpt_response['shodan_query']}\n\n"
             f"📝 Explanation:\n"
-            f"{response['explanation']}"
+            f"{chatgpt_response['explanation']}\n\n"
+            f"🌐 Shodan Results:\n"
         )
+
+        # Add Shodan results
+        for idx, result in enumerate(shodan_results, 1):
+            formatted_response += (
+                f"\nResult {idx}:\n"
+                f"IP: {result['ip']}\n"
+                f"Port: {result['port']}\n"
+                f"Organization: {result['organization']}\n"
+                f"Location: {result['location']}\n"
+                f"Product: {result['product']} {result['version']}\n"
+            )
+            if result['vulns']:
+                formatted_response += f"Vulnerabilities: {', '.join(result['vulns'])}\n"
         
         return JSONResponse({
             "guidance": formatted_response
         })
 
     except Exception as e:
-        # Log the error (in production, use proper logging)
         print(f"Error processing query: {str(e)}")
         raise HTTPException(
             status_code=500,
