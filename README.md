@@ -1,6 +1,6 @@
 # VulnGPT
 
-A web-based vulnerability analysis interface combining Shodan data with ChatGPT-powered insights.
+A web-based vulnerability analysis interface combining Shodan data with ChatGPT-powered insights, featuring performance evaluation and visualization capabilities.
 
 ## Quick Setup
 
@@ -38,31 +38,88 @@ uvicorn main:app --reload
 
 The interface will be available at `http://localhost:8000`
 
+### 5. Running Performance Evaluations
+
+The project includes two types of performance evaluations:
+
+#### Single-Query Performance
+Run the basic performance evaluation:
+```bash
+python evaluation.py
+```
+This will measure response times for individual components and save results in `evaluation_results/`.
+
+#### Load Testing
+Run the concurrent users simulation:
+```bash
+python load_evaluation.py
+```
+This simulates multiple concurrent users and saves results in `load_test_results/`.
+
+### 6. Visualizing Results
+
+Generate visualizations for the evaluation results:
+
+#### Basic Performance Visualization
+```bash
+python visualization.py
+```
+Creates plots showing component-wise performance metrics.
+
+#### Load Test Visualization
+```bash
+python load_visualization.py
+```
+Creates plots showing system performance under load.
+
 ## Project Structure
 ```
 vulngpt/
 ├── static/
 │   ├── css/
-│   │   └── style.css      # Interface styling
+│   │   └── style.css        # Interface styling
 │   └── js/
-│       └── main.js        # Frontend logic
+│       └── main.js          # Frontend logic
 ├── templates/
-│   └── index.html         # Main interface
-├── main.py               # FastAPI application
-├── requirements.txt      # Project dependencies
-└── .env                 # Environment variables
+│   └── index.html           # Main interface
+├── services/
+│   ├── chatgpt.py          # ChatGPT integration
+│   ├── shodan.py           # Shodan API integration
+│   └── vulnSolution.py     # Security solution generation
+├── evaluation_results/      # Performance evaluation results
+├── load_test_results/      # Load testing results
+├── main.py                 # FastAPI application
+├── evaluation.py           # Performance evaluation
+├── visualization.py        # Results visualization
+├── load_evaluation.py      # Load testing
+├── load_visualization.py   # Load test visualization
+├── requirements.txt        # Project dependencies
+└── .env                   # Environment variables
 ```
 
 ## Requirements
 
-The following packages are required (included in requirements.txt):
-- fastapi
-- uvicorn
-- jinja2
-- python-multipart
-- python-dotenv
-- shodan
-- openai
+Key dependencies (included in requirements.txt):
+- FastAPI and related packages
+- Shodan API client
+- OpenAI API client
+- Data analysis: pandas, numpy
+- Visualization: matplotlib, seaborn
+- Other utilities: python-dotenv, httpx
+
+## Performance Metrics
+
+The system has been evaluated for:
+- Component-wise response times
+- Concurrent user handling
+- System scalability
+- Success rates under load
+
+Visualization capabilities include:
+- Response time distributions
+- Component breakdown analysis
+- Success rate analysis
+- Performance metrics under load
 
 ## Troubleshooting
 
@@ -78,6 +135,23 @@ Then repeat the setup steps.
 - Environment variables are set correctly
 - Port 8000 is not in use
 
+3. For visualization issues:
+- Ensure matplotlib and seaborn are properly installed
+- Check write permissions in results directories
+- Verify that evaluation results exist before visualization
+
 ## Support
 
-For issues and support, please open a GitHub issue or contact the maintainers. 
+For issues and support:
+- Open a GitHub issue
+- Contact the maintainers
+- Check the documentation for common solutions
+
+## License
+
+[Your License Information]
+
+## Author
+
+Shovon Paul
+  
