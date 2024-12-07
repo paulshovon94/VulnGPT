@@ -1,0 +1,11 @@
+Query,Total Time,Success,Error
+Find vulnerable Apache servers in Germany,76.92463207244873,True,
+Show me exposed MongoDB databases in the US,91.50086688995361,True,
+Find IoT devices with default passwords,7.666659832000732,True,
+Search for vulnerable WordPress sites in Canada,4.5706658363342285,True,
+Find exposed Jenkins servers,92.31112909317017,True,
+Find vulnerable Apache servers in Germany,1.9559738636016846,True,
+Show me exposed MongoDB databases in the US,93.54677200317383,True,
+Find IoT devices with default passwords,3.2519218921661377,True,
+Search for vulnerable WordPress sites in Canada,75.6021831035614,True,
+Find exposed Jenkins servers,94.79635787010193,True,

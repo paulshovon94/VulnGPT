@@ -67,11 +67,10 @@ class PerformanceVisualizer:
         plt.figure(figsize=(15, 8))
         
         try:
-            # Set larger font sizes - increased significantly
+            # Set larger font sizes
             plt.rcParams.update({
                 'font.size': 24,
                 'axes.labelsize': 28,
-                'axes.titlesize': 32,
                 'xtick.labelsize': 24,
                 'ytick.labelsize': 24
             })
@@ -83,8 +82,7 @@ class PerformanceVisualizer:
             # Create violin plot with larger scale
             ax = sns.violinplot(data=df_melted, x='Component', y='Time (seconds)', scale='width')
             
-            # Customize the plot
-            plt.title('Distribution of Response Times by Component', pad=20, fontsize=32, fontweight='bold')
+            # Customize the plot without title
             plt.xlabel('Component', labelpad=15, fontsize=28, fontweight='bold')
             plt.ylabel('Time (seconds)', labelpad=15, fontsize=28, fontweight='bold')
             plt.xticks(rotation=45, ha='right')
@@ -117,7 +115,6 @@ class PerformanceVisualizer:
             plt.rcParams.update({
                 'font.size': 24,
                 'axes.labelsize': 28,
-                'axes.titlesize': 32,
                 'xtick.labelsize': 24,
                 'ytick.labelsize': 24,
                 'legend.fontsize': 24
@@ -135,7 +132,6 @@ class PerformanceVisualizer:
                        label=component, color=color)
                 bottom += means[component]
             
-            plt.title('Average Component Time Breakdown', pad=20, fontsize=32, fontweight='bold')
             plt.ylabel('Time (seconds)', labelpad=15, fontsize=28, fontweight='bold')
             
             # Move legend to top center, horizontal orientation with larger text
@@ -178,7 +174,6 @@ class PerformanceVisualizer:
             plt.rcParams.update({
                 'font.size': 24,
                 'axes.labelsize': 28,
-                'axes.titlesize': 32,
                 'xtick.labelsize': 24,
                 'ytick.labelsize': 24
             })
@@ -192,9 +187,8 @@ class PerformanceVisualizer:
                 'Max': analysis['total']['max']
             }
             
-            # Create bar plot
+            # Create bar plot without title
             bars = plt.bar(metrics.keys(), metrics.values(), color='skyblue')
-            plt.title('Performance Summary Metrics', pad=20, fontsize=32, fontweight='bold')
             plt.ylabel('Time (seconds)', labelpad=15, fontsize=28, fontweight='bold')
             
             # Add value labels on top of bars with larger font
